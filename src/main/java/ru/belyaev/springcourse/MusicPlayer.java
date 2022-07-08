@@ -1,16 +1,23 @@
 package ru.belyaev.springcourse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MusicPlayer {
-    private Music music;
-
-    private List<Music> musicList = new ArrayList<>();
+    @Value("${musicPlayer.name}")
     private String name;
+    @Value("${musicPlayer.volume}")
     private int volume;
 
-    public void setMusicList(List<Music> musicList) {
+    private List<Music> musicList;
+
+    public MusicPlayer(List<Music> musicList) {
         this.musicList = musicList;
     }
 
@@ -18,32 +25,14 @@ public class MusicPlayer {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getVolume() {
         return volume;
     }
 
-    public void setVolume(int volume) {
-        this.volume = volume;
+    public String playMusic() {
+        Random random = new Random();
+        return "Playng " + musicList.get(random.nextInt(musicList.size())).getSong() +
+                " with volume " + this.volume;
     }
 
-    public MusicPlayer() {
-    }
-
-/*    public void setMusic(Music music) {
-        this.music = music;
-    }
-
-    public MusicPlayer(Music music) {
-        this.music = music;
-    }*/
-
-    public void playMusic() {
-       for (Music music : musicList) {
-           System.out.println("Playing : " + music.getSong());
-       }
-    }
 }
