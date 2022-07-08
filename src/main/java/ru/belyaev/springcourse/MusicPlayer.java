@@ -4,17 +4,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.util.Random;
+
 @Component
 public class MusicPlayer {
-private Music music1;
-private Music music2;
+    private final ClassicalMusic classicalMusic;
+    private final RockMusic rockMusic;
 
-    public MusicPlayer(@Qualifier("popMusic") Music music1, @Qualifier("rockMusic") Music music2) {
-        this.music1 = music1;
-        this.music2 = music2;
+    @Autowired
+    public MusicPlayer(ClassicalMusic classicalMusic, RockMusic rockMusic) {
+        this.classicalMusic = classicalMusic;
+        this.rockMusic = rockMusic;
     }
 
-    public String playMusic() {
-        return "Playing : " + music1.getSong() + " , " + music2.getSong();
+    public void playMusic(Genre genre) {
+        Random random = new Random();
+        int randomSong = random.nextInt(3);
+
+        if (genre == Genre.CLASSICAL) {
+            System.out.println(classicalMusic.getSongs().get(randomSong));
+        } else {
+            System.out.println(rockMusic.getSongs().get(randomSong));
+        }
     }
 }
+
